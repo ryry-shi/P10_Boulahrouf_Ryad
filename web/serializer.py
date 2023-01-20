@@ -1,24 +1,26 @@
-from .models import User, Projects, Contributors, Issues
+from .models import Comments, User, Projects, Contributors, Issues
 from rest_framework import serializers
-
+from django.contrib.auth.hashers import (
+    make_password,
+)
 
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         
         model = User
-        fields = ["username", "password", "last_name", "email"]
+        fields = ["username", "password", "last_name", "email","user_id"]
 
-        def create(self, validated_data):
-                user = User.objects.create(
-                    username=validated_data["username"],
-                    email=validated_data["email"],
-                    first_name=validated_data["first_name"],
-                    last_name=validated_data["last_name"],
-                )
-                user.set_password(validated_data["password"])
-                user.save()
-                return user
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data["username"],
+            email=validated_data["email"],
+            last_name=validated_data["last_name"],
+            password=make_password(validated_data["password"])
+        )
+        user.save()
+        return user
 
 class ProjectSerializer(serializers.ModelSerializer):
 
@@ -49,3 +51,11 @@ class IssueSerializer(serializers.ModelSerializer):
             project = Projects.objects.create(**validate_data)
             project.save()
             return project 
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Comments
+        fields = ["comments", "issue_id", "author_user_id"]

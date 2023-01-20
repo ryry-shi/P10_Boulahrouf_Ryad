@@ -3,11 +3,15 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
 
+    # USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
     user_id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=50, unique=True)
     last_name = models.CharField(max_length=50)
-    email = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
+
 
 class Projects(models.Model):
 

@@ -1,17 +1,11 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions
 from rest_framework import status
 from rest_framework import viewsets
-from .serializer import UserSerializer, ProjectSerializer, IssueSerializer
+from .serializer import CommentSerializer, UserSerializer, ProjectSerializer, IssueSerializer
 from .models import User, Projects, Issues
-from django.contrib.auth import authenticate, login
 
 
 class UserAPIView(viewsets.ModelViewSet):
-
-    permission_classes = (permissions.AllowAny,)
 
     serializer_class = UserSerializer
     queryset = User.objects.all()
@@ -22,8 +16,8 @@ class UserAPIView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        user = request.data
-        serializer = self.serializer_class(data=user)
+        users_data = request.data
+        serializer = self.serializer_class(data=users_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -37,7 +31,6 @@ class ProjectAPIView(viewsets.ModelViewSet):
     queryset = Projects.objects.all()
 
     def get(self, *args, **kwargs):
-        
         queryset = Projects.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
@@ -83,3 +76,7 @@ class IssueAPIView(viewsets.ModelViewSet):
         issue = Issues.objects.get(pk=project_id)
         issue.delete()
         return issue
+
+class CommentAPIView(viewsets.ModelViewSet):
+
+    serializer_class = CommentSerializer
