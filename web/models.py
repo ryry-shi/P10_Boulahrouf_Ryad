@@ -3,13 +3,12 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
 
-    # USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    user_id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=50, unique=True)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50, unique=True)
+    email = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
 
 
@@ -22,6 +21,8 @@ class Projects(models.Model):
     author_user_id = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="project")
 
 class Contributors(models.Model):
+
+    # permission.Choice field
 
     user_id = models.IntegerField()
     project_id = models.IntegerField()

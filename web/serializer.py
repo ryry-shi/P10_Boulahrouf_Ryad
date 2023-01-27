@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         
         model = User
-        fields = ["username", "password", "last_name", "email","user_id"]
+        fields = ["username", "password", "last_name", "email"]
 
 
     def create(self, validated_data):
@@ -39,13 +39,19 @@ class ContributorSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Contributors
+        fields = ["role"]
+
+        def create(self, validate_data):
+            user = Contributors.objects.create(**validate_data)
+            user.save()
+            return user
 
 class IssueSerializer(serializers.ModelSerializer):
 
     class Meta:
 
         model = Issues
-        fields = ["title","desc","tag","priority","status","project_id","author_user_id","assignee_user_id"]
+        fields = ["title","desc","tag","priority","status","author_user_id","assignee_user_id"]
 
         def create_issue(self, validate_data):
             project = Projects.objects.create(**validate_data)

@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from .serializer import CommentSerializer, UserSerializer, ProjectSerializer, IssueSerializer
-from .models import User, Projects, Issues
+from .serializer import CommentSerializer, UserSerializer, ProjectSerializer, IssueSerializer, ContributorSerializer
+from .models import User, Projects, Issues, Comments, Contributors
 
 
 class UserAPIView(viewsets.ModelViewSet):
@@ -66,6 +66,8 @@ class IssueAPIView(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=queryset)
         return Response(serializer.data)
 
+    # def post():
+
     def put(self, project_id, *args, **kwargs):
         issue_data = Issues.objects.get(pk=project_id)
         serializer = self.serializer_class(data=issue_data)
@@ -77,6 +79,14 @@ class IssueAPIView(viewsets.ModelViewSet):
         issue.delete()
         return issue
 
+
+class ContributorAPIView(viewsets.ModelViewSet):
+
+    serializer_class = ContributorSerializer
+    queryset = Contributors.objects.all()
+
+
 class CommentAPIView(viewsets.ModelViewSet):
 
     serializer_class = CommentSerializer
+    queryset = Comments.objects.all()
