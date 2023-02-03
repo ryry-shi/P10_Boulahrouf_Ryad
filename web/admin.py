@@ -9,7 +9,8 @@ class ProjectAdmin(admin.ModelAdmin):
 
     list_display = ("title", "description")
 
+
+
 admin.site.register(User)
 admin.site.register(Projects)
-admin.site.register(Contributors)
 # Register your models here.

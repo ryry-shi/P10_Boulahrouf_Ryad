@@ -29,22 +29,22 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Projects
         fields = ["title", "description", "type", "author_user_id"]
 
-        def create_projects(self, validate_data):
-            project = Projects.objects.create(**validate_data)
-            project.save()
-            return project 
+    def create_projects(self, validate_data):
+        project = Projects.objects.create(**validate_data)
+        project.save()
+        return project 
 
 class ContributorSerializer(serializers.ModelSerializer):
 
     class Meta:
 
         model = Contributors
-        fields = ["role"]
+        fields = ["role","user_id", "project_id"]
 
-        def create(self, validate_data):
-            user = Contributors.objects.create(**validate_data)
-            user.save()
-            return user
+    def create_contributors(self, validate_data):
+        user = Contributors.objects.create(**validate_data)
+        user.save()
+        return user
 
 class IssueSerializer(serializers.ModelSerializer):
 

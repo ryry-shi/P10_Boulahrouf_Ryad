@@ -22,8 +22,13 @@ class Projects(models.Model):
 
 class Contributors(models.Model):
 
-    # permission.Choice field
-
+    PERMISSION_CHOICES = [
+        ('AUTHOR', 'Author'),
+        ('CONTRIBUTOR', 'Contributor'),
+    ]
+    role = models.CharField(max_length=50,
+                            choices=PERMISSION_CHOICES,
+                            )
     user_id = models.IntegerField()
     project_id = models.IntegerField()
     role = models.CharField(max_length=50)

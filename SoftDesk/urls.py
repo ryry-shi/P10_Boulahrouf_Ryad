@@ -14,9 +14,10 @@ router.register(r"projects", ProjectAPIView)
 
 project_router = routers.NestedSimpleRouter(router, r"projects", lookup="project")
 project_router.register(r"issues", IssueAPIView, basename="issues")
-project_router.register(r'users', ContributorAPIView, basename='contributors')
+project_router.register(r'contributors', ContributorAPIView, basename='contributors')
 issue_router = routers.NestedSimpleRouter(project_router, r"issues", lookup="issue")
 issue_router.register(r"comments", CommentAPIView, basename="comments")
+issue_router.register(r"contributors", ContributorAPIView, basename="test")
 
 
 urlpatterns = [
